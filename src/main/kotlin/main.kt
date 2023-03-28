@@ -39,8 +39,8 @@ fun maximumTransferPer(name: String, transferAmount: Int, transferAmountMonth: I
 fun commissionAmount(name: String, transferAmount: Int, transferAmountMonth: Int, itWorks: String): Int {
     when (name) {
         "MasterCart", "Maestro" -> if (stock(itWorks)) {
-            when (transferAmountMonth) {
-                in 300..75_000 -> return 0
+            if (transferAmount + transferAmountMonth in 300..75_000) {
+                return 0
             }
         } else return ((transferAmount * 0.6 / 100) + 20).toInt()
 

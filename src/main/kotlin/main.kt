@@ -1,7 +1,7 @@
 fun main() {
 
-    println(commission("MasterCart", 145000))
-    println(commission("Mir", 10000))
+    println(commission("MasterCart", 14000))
+    println(commission("Mir", 1000))
     println(commission("VkPlay", 15500))
 
 }

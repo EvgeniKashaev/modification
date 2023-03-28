@@ -2,17 +2,17 @@ fun main() {
 
     println(commission("MasterCart", 14000))
     println(commission("Mir", 1000))
-    println(commission("VkPlay", 15500))
+    println(commission("VK Play", 15500))
 
 }
 
-fun commission(name: String = "MasterCart", transferAmount: Int, transferAmountMonth:Int = 0): Int {
+fun commission(name: String = "VK Play", transferAmount: Int, transferAmountMonth:Int = 0): Int {
     when (name) {
-        "MasterCart", "Mir" -> if (maximumTransferPer(name, transferAmount, transferAmountMonth)) {
+        "MasterCart", "Maestro", "Visa", "Mir" -> if (maximumTransferPer(name, transferAmount, transferAmountMonth)) {
             return commissionAmount(name, transferAmount)
         }
 
-        "VkPlay" -> if (maximumTransferPer(name, transferAmount, transferAmountMonth)) {
+        "VK Play" -> if (maximumTransferPer(name, transferAmount, transferAmountMonth)) {
             return transferAmount
         }
     }
@@ -22,11 +22,11 @@ fun maximumTransferPer(name: String, transferAmount: Int, transferAmountMonth: I
 
     when (name) {
 
-        "MasterCart", "Mir" -> if (transferAmountMonth < 600_000 || transferAmount < 150_000) {
+        "MasterCart", "Maestro", "Visa", "Mir" -> if (transferAmountMonth < 600_000 || transferAmount < 150_000) {
             return true
         }
 
-        "VkPlay" -> if (transferAmountMonth < 40_000 || transferAmount < 15_000) {
+        "VK Play" -> if (transferAmountMonth < 40_000 || transferAmount < 15_000) {
             return true
         }
     }
@@ -35,18 +35,21 @@ fun maximumTransferPer(name: String, transferAmount: Int, transferAmountMonth: I
 
 fun commissionAmount(name: String, transferAmount: Int): Int {
     when (name) {
-        "MasterCart" -> return when (transferAmount) {
+        "MasterCart", "Maestro" -> return when (transferAmount) {
             in 300..75_000 -> {
-                transferAmount
+                0
             }
+
             else -> {
                 ((transferAmount * 0.6 / 100) + 20).toInt()
             }
         }
 
-        "Mir" -> if (35 < ((transferAmount * 100 / 0.75) - transferAmount)) {
+        "Visa", "Mir" -> if (35 < ((transferAmount * 100 / 0.75) - transferAmount)) {
+
             return 35
         } else transferAmount * 100 / 0.75
+
     }
     return transferAmount
 }

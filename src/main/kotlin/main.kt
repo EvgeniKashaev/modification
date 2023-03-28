@@ -1,19 +1,19 @@
 fun main() {
 
-    println(commission("MasterCart", 14000))
+    println(commission("MasterCart", 14000, 75_001))
     println(commission("Mir", 1000))
     println(commission("VK Play", 15500))
 
 }
-
 fun commission(name: String = "VK Play", transferAmount: Int, transferAmountMonth:Int = 0): Int {
+
     when (name) {
         "MasterCart", "Maestro", "Visa", "Mir" -> if (maximumTransferPer(name, transferAmount, transferAmountMonth)) {
-            return commissionAmount(name, transferAmount)
+            return commissionAmount(name, transferAmount, transferAmountMonth)
         }
 
         "VK Play" -> if (maximumTransferPer(name, transferAmount, transferAmountMonth)) {
-            return transferAmount
+            return 0
         }
     }
     return -1
@@ -33,9 +33,9 @@ fun maximumTransferPer(name: String, transferAmount: Int, transferAmountMonth: I
     return false
 }
 
-fun commissionAmount(name: String, transferAmount: Int): Int {
+fun commissionAmount(name: String, transferAmount: Int, transferAmountMonth: Int): Int {
     when (name) {
-        "MasterCart", "Maestro" -> return when (transferAmount) {
+        "MasterCart", "Maestro" -> return when (transferAmountMonth) {
             in 300..75_000 -> {
                 0
             }
@@ -48,7 +48,7 @@ fun commissionAmount(name: String, transferAmount: Int): Int {
         "Visa", "Mir" -> if (35 < ((transferAmount * 100 / 0.75) - transferAmount)) {
 
             return 35
-        } else transferAmount * 100 / 0.75
+        } else (transferAmount * 100 / 0.75).toInt()
 
     }
     return transferAmount

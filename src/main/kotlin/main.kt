@@ -1,8 +1,8 @@
 fun main() {
 
 
-    println(commission("MasterCart", 2000, 1000, "*"))
-    println(commission("MasterCart", 2000, 0))
+    println(commission("MasterCart", 2000, 1000 ))
+    println(commission("MasterCart", 2000, 74_000))
     println(commission("Mir", 10000))
     println(commission("VK Play", 150, 40001))
     println(commission("VK Play", 15001, 32))
@@ -10,10 +10,10 @@ fun main() {
 
 }
 
-fun commission(name: String = "VK Play", transferAmount: Int, transferAmountMonth: Int = 0, itWorks: String = "#"): Int {
+fun commission(name: String = "VK Play", transferAmount: Int, transferAmountMonth: Int = 0): Int {
     when (name) {
         "MasterCart", "Maestro", "Visa", "Mir" -> if (maximumTransferPer(name, transferAmount, transferAmountMonth)) {
-            return commissionAmount(name, transferAmount, transferAmountMonth, itWorks)
+            return commissionAmount(name, transferAmount, transferAmountMonth)
         }
 
         "VK Play" -> if (maximumTransferPer(name, transferAmount, transferAmountMonth)) {
@@ -36,23 +36,15 @@ fun maximumTransferPer(name: String, transferAmount: Int, transferAmountMonth: I
     return false
 }
 
-fun commissionAmount(name: String, transferAmount: Int, transferAmountMonth: Int, itWorks: String): Int {
+fun commissionAmount(name: String, transferAmount: Int, transferAmountMonth: Int): Int {
     when (name) {
-        "MasterCart", "Maestro" -> if (stock(itWorks)) {
-            if (transferAmount + transferAmountMonth in 300..75_000) {
-                return 0
-            }
-        } else return ((transferAmount * 0.6 / 100) + 20).toInt()
+        "MasterCart", "Maestro" -> return if (transferAmount + transferAmountMonth in 300..75_000) {
+            0
+        } else ((transferAmount * 0.6 / 100) + 20).toInt()
 
         "Visa", "Mir" -> return if (35 < (transferAmount / 100 * 0.75)) {
             (transferAmount / 100 * 0.75).toInt()
         } else 35
     }
     return 0
-}
-fun stock(itWorks: String): Boolean {
-    if (itWorks == "*"){
-        return true
-    }
-    return false
 }
